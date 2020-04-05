@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/todoListFragment">
+
+    <fragment
+        android:id="@+id/todoListFragment"
+        android:name="com.example.sbs.myapplication.TodoListFragment"
+        android:label="목록"
+        tools:layout="@layout/fragment_todo_list">
+        <action
+            android:id="@+id/action_todoListFragment_to_todoDetailFragment"
+            app:destination="@id/todoDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/todoAddFragment"
+        android:name="com.example.sbs.myapplication.TodoAddFragment"
+        android:label="추가"
+        tools:layout="@layout/fragment_todo_add" />
+    <fragment
+        android:id="@+id/todoDetailFragment"
+        android:name="com.example.sbs.myapplication.TodoDetailFragment"
+        android:label="상세"
+        tools:layout="@layout/fragment_todo_detail">
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingMainFragment"
+        android:name="com.example.sbs.myapplication.SettingMainFragment"
+        android:label="세팅"
+        tools:layout="@layout/fragment_setting_main" />
+</navigation>
