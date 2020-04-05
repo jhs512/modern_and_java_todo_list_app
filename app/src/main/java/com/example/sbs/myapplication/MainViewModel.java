@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.room.Room;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,25 +17,26 @@ public class MainViewModel extends AndroidViewModel {
     private List<TodoItem> todoItemList;
     @Setter
     private RecyclerViewTodoAdapter recyclerViewTodoAdapter;
+    private AppDatabase db;
+    private int lastTodoId;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
 
         todoItemList = new ArrayList<>();
-        todoItemList.add(new TodoItem(new Todo(1, "제목 1")));
-        todoItemList.add(new TodoItem(new Todo(2, "제목 2")));
     }
 
     public void addTodoItem(String title) {
-        int newId = 1;
+        int newId = lastTodoId + 1;
+        Todo todo = new Todo(newId, title);
+        this.db.todoDao().add(todo);
+        todoItemList.add(new TodoItem(todo));
 
-        if (todoItemList.size() > 0) {
-            newId = todoItemList.get(todoItemList.size() - 1).getTodo().getId() + 1;
-        }
-        todoItemList.add(new TodoItem(new Todo(newId, title)));
+        lastTodoId++;
     }
 
     public void deleteTodoItem(TodoItem todoItem) {
+        this.db.todoDao().delete(todoItem.getTodo());
         todoItemList.remove(todoItem);
 
         if (recyclerViewTodoAdapter != null) {
@@ -50,5 +52,19 @@ public class MainViewModel extends AndroidViewModel {
         }
 
         return null;
+    }
+
+    public void setDb(AppDatabase db) {
+        this.db = db;
+
+        TodoDao todoDao = this.db.todoDao();
+        List<Todo> todoList = todoDao.getAll();
+
+        todoItemList.clear();
+
+        for ( Todo todo : todoList ) {
+            todoItemList.add(new TodoItem(todo));
+            lastTodoId = todo.getId();
+        }
     }
 }

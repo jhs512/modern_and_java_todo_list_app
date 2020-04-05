@@ -44,4 +44,9 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.12'
     annotationProcessor "org.projectlombok:lombok:1.18.12" //require for anotation
     compileOnly 'org.glassfish:javax.annotation:10.0-b28'
+
+    implementation 'androidx.room:room-runtime:2.2.5'
+    annotationProcessor 'androidx.room:room-compiler:2.2.5'
+
+    implementation 'com.facebook.stetho:stetho:1.5.1'
 }
